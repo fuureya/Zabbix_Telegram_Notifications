@@ -15,7 +15,17 @@ const sendTriggerFourHours = (ctx) => {
 
 const getHosts = async (ctx) => {
   try {
-    const message = await getHostZabbix(); // pastikan getHosts() mengembalikan string
+    const message = await getHostZabbix();
+    await ctx.reply(message);
+  } catch (err) {
+    console.error("Error saat kirim pesan:", err);
+    await ctx.reply("Terjadi kesalahan saat mengambil data.");
+  }
+};
+
+const gethostinactive = async (ctx) => {
+  try {
+    const message = await getTimeoutHosts();
     await ctx.reply(message);
   } catch (err) {
     console.error("Error saat kirim pesan:", err);
@@ -33,4 +43,9 @@ const getTokenZabbix = async (ctx) => {
   }
 };
 
-export default { sendTriggerFourHours, getHosts, getTokenZabbix };
+export default {
+  sendTriggerFourHours,
+  getHosts,
+  getTokenZabbix,
+  gethostinactive,
+};

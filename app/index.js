@@ -8,14 +8,24 @@ const bot = new Telegraf(process.env.ZABBIX_TELEGRAM_TOKEN);
 
 bot.start((ctx) => {
   ctx.reply(
-    "Bot Aktif!! bot ini akan mengirim informasi tentang jaringan selama 4 jam sekali!!"
+    `Bot Aktif!! bot ini akan mengirim informasi tentang jaringan selama 1 jam sekali!! \n \n List Perintah \n \n 
+    Untuk Memulai Bot : /start \n
+    Lihat Data Host Yang Aktif : /gethostactive \n
+    Lihat Data Host Yang Tidak Aktif : /gethostinactive \n
+    Ambil Token Zabbix : /gettoken \n
+    Untuk Hentikan Bot : /stop`
   );
   sendTriggerFourHours(ctx);
 });
 
-bot.command("gethost", (ctx) => {
+bot.command("gethostactive", (ctx) => {
   ctx.reply("Mengambil Informasi Jumlah Host Dari Zabbix...");
   getHosts(ctx);
+});
+
+bot.command("gethostinactive", (ctx) => {
+  ctx.reply("Mengambil Informasi Jumlah Host Dari Zabbix...");
+  getHostsInactive(ctx);
 });
 
 bot.command("gettoken", (ctx) => {
