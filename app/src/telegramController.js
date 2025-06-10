@@ -10,7 +10,7 @@ const sendTriggerFourHours = (ctx) => {
       console.error("Error saat kirim pesan:", err);
       await ctx.reply("Terjadi kesalahan saat mengambil data.");
     }
-  }, 5000);
+  }, 3600000);
 };
 
 const getHosts = async (ctx) => {
