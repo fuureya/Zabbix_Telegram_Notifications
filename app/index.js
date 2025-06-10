@@ -1,7 +1,8 @@
 import { Telegraf } from "telegraf";
 import dotenv from "dotenv";
 import telegramController from "./src/telegramController.js";
-const { sendTriggerFourHours, getHosts, getTokenZabbix } = telegramController;
+const { sendTriggerFourHours, getHosts, getTokenZabbix, getHostsInactive } =
+  telegramController;
 dotenv.config();
 
 const bot = new Telegraf(process.env.ZABBIX_TELEGRAM_TOKEN);
