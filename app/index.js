@@ -26,7 +26,7 @@ bot.command("gethostactive", (ctx) => {
 
 bot.command("gethostinactive", (ctx) => {
   ctx.reply("Mengambil Informasi Jumlah Host Dari Zabbix...");
-  getHostsInactive(ctx);
+  getHostInactive(ctx);
 });
 
 bot.command("gettoken", (ctx) => {
