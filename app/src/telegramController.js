@@ -23,7 +23,7 @@ const getHosts = async (ctx) => {
   }
 };
 
-const getHostInactive = async (ctx) => {
+const getHostsInactive = async (ctx) => {
   try {
     const message = await getTimeoutHosts();
     await ctx.reply(message);
@@ -47,5 +47,5 @@ export default {
   sendTriggerFourHours,
   getHosts,
   getTokenZabbix,
-  getHostInactive,
+  getHostsInactive,
 };
