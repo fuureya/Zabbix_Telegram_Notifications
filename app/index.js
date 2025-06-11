@@ -1,8 +1,14 @@
 import { Telegraf } from "telegraf";
 import dotenv from "dotenv";
 import telegramController from "./src/telegramController.js";
-const { sendTriggerFourHours, getHosts, getTokenZabbix, getHostsInactive } =
-  telegramController;
+const {
+  sendTriggerEveryHour,
+  getHosts,
+  getTokenZabbix,
+  getHostsInactive,
+  getLinkDown,
+} = telegramController;
+
 dotenv.config();
 
 const bot = new Telegraf(process.env.ZABBIX_TELEGRAM_TOKEN);
@@ -16,7 +22,7 @@ bot.start((ctx) => {
     Ambil Token Zabbix : /gettoken \n
     Untuk Hentikan Bot : /stop`
   );
-  sendTriggerFourHours(ctx);
+  sendTriggerEveryHour(ctx);
 });
 
 bot.command("gethostactive", (ctx) => {
@@ -32,6 +38,11 @@ bot.command("gethostinactive", (ctx) => {
 bot.command("gettoken", (ctx) => {
   ctx.reply("Mengambil token Dari Zabbix...");
   getTokenZabbix(ctx);
+});
+
+bot.command("getlinkdown", (ctx) => {
+  ctx.reply("Mengambil Data Dari Zabbix...");
+  getLinkDown(ctx);
 });
 
 bot.command("stop", (ctx) => {
