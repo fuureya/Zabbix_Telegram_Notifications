@@ -18,9 +18,9 @@ bot.start((ctx) => {
     `Bot Aktif!! bot ini akan mengirim informasi tentang jaringan selama 1 jam sekali!! \n \n List Perintah \n \n 
     Untuk Memulai Bot : /start \n
     Lihat Data Host Yang Aktif : /gethostactive \n
-    Lihat Data Host Yang Tidak Aktif : /gethostinactive \n
-    Ambil Token Zabbix : /gettoken \n
-    Untuk Hentikan Bot : /stop`
+    Lihat Data Host Yang Tidak Aktif : /getlinkdown \n
+    Lihat Link Yang Tidak Aktif : /getlink \n
+    Ambil Token Zabbix : /gettoken \n`
   );
   sendTriggerEveryHour(ctx);
 });

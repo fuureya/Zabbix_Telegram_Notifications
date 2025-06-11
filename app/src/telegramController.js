@@ -13,7 +13,7 @@ const sendTriggerEveryHour = (ctx) => {
       console.error("Error saat kirim pesan:", err.stack || err.message);
       await ctx.reply("Terjadi kesalahan saat mengambil data.");
     }
-  }, 3600000); // 1 jam 3600000
+  }, 3600000);
 };
 
 const getHosts = async (ctx) => {

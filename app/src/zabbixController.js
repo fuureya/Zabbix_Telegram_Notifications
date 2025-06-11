@@ -195,7 +195,6 @@ async function getTrafficRouters() {
 
   for (const routerName of routers) {
     try {
-      // 1. Ambil host dari nama router
       const hostRes = await axios.post(
         ZABBIX_API,
         {
@@ -216,10 +215,6 @@ async function getTrafficRouters() {
       const hostList = hostRes.data.result;
 
       console.log(hostList);
-      // if (!hostList || hostList.length === 0) {
-      //   report += `❌ Router "${routerName}" tidak ditemukan di Zabbix\n`;
-      //   continue;
-      // }
 
       const host = hostList[0];
 
