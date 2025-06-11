@@ -19,7 +19,7 @@ bot.start((ctx) => {
     Untuk Memulai Bot : /start \n
     Lihat Data Host Yang Aktif : /gethostactive \n
     Lihat Data Host Yang Tidak Aktif : /getlinkdown \n
-    Lihat Link Yang Tidak Aktif : /getlink \n
+    Lihat Link Yang Tidak Aktif : /getlinkdown \n
     Ambil Token Zabbix : /gettoken \n`
   );
   sendTriggerEveryHour(ctx);
