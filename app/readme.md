@@ -18,6 +18,8 @@ Anda dapat berinteraksi dengan bot menggunakan perintah-perintah berikut:
 - `/gethostactive` - Mengambil jumlah dan daftar host yang aktif dari Zabbix.
 - `/gethostinactive` - Mengambil daftar host yang tidak aktif/bermasalah.
 - `/getlinkdown` - Menampilkan detail link atau interface yang sedang down.
+- `/gettraffic` - Menampilkan daftar host untuk melihat rata-rata trafik hari ini (00:00 - sekarang).
+- `/gettemp` - Menampilkan daftar host yang memiliki sensor suhu untuk melihat temperatur saat ini.
 - `/gettoken` - Mengambil token autentikasi Zabbix.
 - `/stop` - Menghentikan bot.
 

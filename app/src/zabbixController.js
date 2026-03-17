@@ -290,10 +290,101 @@ async function getTrafficRouters() {
   return report;
 }
 
+async function getHostsRaw() {
+  try {
+    const response = await axios.post(
+      process.env.ZABBIX_BASE_URL,
+      {
+        jsonrpc: "2.0",
+        method: "host.get",
+        params: {
+          output: ["hostid", "name", "host"],
+        },
+        id: 5,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ZABBIX_TOKEN}`,
+        },
+      }
+    );
+    return response.data.result || [];
+  } catch (error) {
+    console.error("Error getHostsRaw:", error.message);
+    return [];
+  }
+}
+
+async function getItemsRaw(hostid, searchKey = "") {
+  try {
+    const params = {
+      hostids: hostid,
+      output: ["itemid", "name", "key_", "lastvalue", "units", "value_type"],
+    };
+    if (searchKey) {
+      params.search = {
+        key_: searchKey,
+      };
+    }
+    const response = await axios.post(
+      process.env.ZABBIX_BASE_URL,
+      {
+        jsonrpc: "2.0",
+        method: "item.get",
+        params: params,
+        id: 6,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ZABBIX_TOKEN}`,
+        },
+      }
+    );
+    return response.data.result || [];
+  } catch (error) {
+    console.error("Error getItemsRaw:", error.message);
+    return [];
+  }
+}
+
+async function getItemHistoryRaw(itemid, timeFrom, valueType = 3) {
+  try {
+    const response = await axios.post(
+      process.env.ZABBIX_BASE_URL,
+      {
+        jsonrpc: "2.0",
+        method: "history.get",
+        params: {
+          itemids: itemid,
+          time_from: timeFrom,
+          output: "extend",
+          history: valueType,
+        },
+        id: 7,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ZABBIX_TOKEN}`,
+        },
+      }
+    );
+    return response.data.result || [];
+  } catch (error) {
+    console.error("Error getItemHistoryRaw:", error.message);
+    return [];
+  }
+}
+
 export default {
   claimZabbixToken,
   getHostZabbix,
   getTimeoutHosts,
   getTrafficRouters,
   getLinkError,
+  getHostsRaw,
+  getItemsRaw,
+  getItemHistoryRaw,
 };

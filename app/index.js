@@ -7,6 +7,9 @@ const {
   getTokenZabbix,
   getHostsInactive,
   getLinkDown,
+  getTrafficSelection,
+  getTempSelection,
+  handleCallback,
 } = telegramController;
 
 dotenv.config();
@@ -20,6 +23,8 @@ bot.start((ctx) => {
     Lihat Data Host Yang Aktif : /gethostactive \n
     Lihat Data Host Yang Tidak Aktif : /gethostinactive \n
     Lihat Link Yang Tidak Aktif : /getlinkdown \n
+    Lihat Rata-rata Trafik Hari Ini : /gettraffic \n
+    Lihat Temperatur Perangkat : /gettemp \n
     Ambil Token Zabbix : /gettoken \n`
   );
   sendTriggerEveryHour(ctx);
@@ -43,6 +48,18 @@ bot.command("gettoken", (ctx) => {
 bot.command("getlinkdown", (ctx) => {
   ctx.reply("Mengambil Data Dari Zabbix...");
   getLinkDown(ctx);
+});
+
+bot.command("gettraffic", (ctx) => {
+  getTrafficSelection(ctx);
+});
+
+bot.command("gettemp", (ctx) => {
+  getTempSelection(ctx);
+});
+
+bot.on("callback_query", (ctx) => {
+  handleCallback(ctx);
 });
 
 bot.command("stop", (ctx) => {
