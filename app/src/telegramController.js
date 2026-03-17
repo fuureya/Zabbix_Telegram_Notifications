@@ -136,13 +136,30 @@ const handleCallback = async (ctx) => {
       const startOfDay = new Date().setHours(0, 0, 0, 0) / 1000;
 
       let report = `📊 Rata-rata Trafik Hari Ini:\n`;
+      let messages = [];
+
       for (const item of items) {
-        if (item.key_.includes("in") || item.key_.includes("out")) {
+        // Hanya ambil metrik Bit (received/sent)
+        if (
+          item.name.toLowerCase().includes("bits") ||
+          item.key_.includes("in") ||
+          item.key_.includes("out")
+        ) {
+          // Abaikan metrik sekunder (error, discarded, packets)
+          if (
+            item.name.toLowerCase().includes("packets") ||
+            item.name.toLowerCase().includes("error") ||
+            item.name.toLowerCase().includes("discarded")
+          ) {
+            continue;
+          }
+
           const history = await getItemHistoryRaw(
             item.itemid,
             startOfDay,
             item.value_type
           );
+
           if (history.length > 0) {
             const sum = history.reduce(
               (acc, curr) => acc + parseFloat(curr.value),
@@ -150,13 +167,31 @@ const handleCallback = async (ctx) => {
             );
             const avg = sum / history.length;
             const mbps = ((avg * 8) / 1000000).toFixed(2);
-            report += `- ${item.name}: ${mbps} Mbps\n`;
-          } else {
-            report += `- ${item.name}: No data\n`;
+
+            // Skip jika trafik 0.00
+            if (parseFloat(mbps) > 0) {
+              const line = `- ${item.name}: ${mbps} Mbps\n`;
+              // Cek karakter limit (4096)
+              if (report.length + line.length > 4000) {
+                messages.push(report);
+                report = `📊 Lanjutan Trafik:\n` + line;
+              } else {
+                report += line;
+              }
+            }
           }
         }
       }
-      await ctx.reply(report);
+
+      messages.push(report);
+
+      if (messages.length === 1 && messages[0].split("\n").length <= 2) {
+        return ctx.reply("Tidak ada trafik aktif (semua 0 Mbps).");
+      }
+
+      for (const msg of messages) {
+        await ctx.reply(msg);
+      }
     } catch (err) {
       console.error(err);
       ctx.reply("Gagal menghitung trafik.");
