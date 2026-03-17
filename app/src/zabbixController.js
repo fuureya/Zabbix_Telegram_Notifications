@@ -67,22 +67,42 @@ async function getTimeoutHosts() {
       }
     );
 
-    const downKeywords = process.env.ZABBIX_TRIGGER_KEYWORDS
-      ? process.env.ZABBIX_TRIGGER_KEYWORDS.split(",").map((k) => k.trim())
-      : ["SNMP data collection", "unreachable", "unavailable", "down", "icmp"];
+    const zabbixKeywords = process.env.ZABBIX_TRIGGER_KEYWORDS || "";
+    // Membersihkan keyword: hapus kutip, trim, dan filter string kosong
+    const downKeywords = zabbixKeywords
+      .split(",")
+      .map((k) => k.trim().replace(/"/g, ""))
+      .filter((k) => k !== "");
+
+    // Jika tidak ada keyword di .env, gunakan default yang aman
+    const finalKeywords =
+      downKeywords.length > 0
+        ? downKeywords
+        : ["unreachable", "unavailable", "down", "icmp"];
 
     const downIssueTriggers = response.data.result.filter((trigger) =>
-      downKeywords.some((keyword) =>
+      finalKeywords.some((keyword) =>
         new RegExp(keyword, "i").test(trigger.description)
       )
     );
-    const hostsWithDownIssues = downIssueTriggers.map((t) => t.hosts).flat();
 
-    const listNamaHost =
-      hostsWithDownIssues.map((host) => host.host).join(", ") ||
-      "Tidak ada host";
+    // Gunakan Map untuk deduplikasi host berdasarkan name, sekalian simpan deskripsi trigger
+    const hostsMap = new Map();
+    downIssueTriggers.forEach((t) => {
+      t.hosts.forEach((h) => {
+        if (!hostsMap.has(h.host)) {
+          hostsMap.set(h.host, t.description);
+        }
+      });
+    });
 
-    return `Jumlah host yang tidak aktif ada: ${hostsWithDownIssues.length}\nDaftar host yang tidak aktif: ${listNamaHost}`;
+    const listDetail = Array.from(hostsMap.entries())
+      .map(([name, desc]) => `- ${name} (${desc})`)
+      .join("\n");
+
+    const listNamaHost = listDetail || "Tidak ada host";
+
+    return `Jumlah host yang tidak aktif ada: ${hostsMap.size}\n\nDaftar host yang tidak aktif:\n${listNamaHost}`;
   } catch (error) {
     console.error("Error ambil host SNMP issue:", error.message);
     return `Error message: ${error.message}`;
