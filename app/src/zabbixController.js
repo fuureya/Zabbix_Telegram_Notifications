@@ -67,22 +67,22 @@ async function getTimeoutHosts() {
       }
     );
 
-    const snmpKeywords = process.env.SNMP_TRIGGER_KEYWORDS
-      ? process.env.SNMP_TRIGGER_KEYWORDS.split(",").map((k) => k.trim())
-      : ["SNMP data collection"];
+    const downKeywords = process.env.ZABBIX_TRIGGER_KEYWORDS
+      ? process.env.ZABBIX_TRIGGER_KEYWORDS.split(",").map((k) => k.trim())
+      : ["SNMP data collection", "unreachable", "unavailable", "down", "icmp"];
 
-    const snmpIssueTriggers = response.data.result.filter((trigger) =>
-      snmpKeywords.some((keyword) =>
+    const downIssueTriggers = response.data.result.filter((trigger) =>
+      downKeywords.some((keyword) =>
         new RegExp(keyword, "i").test(trigger.description)
       )
     );
-    const hostsWithSnmpIssues = snmpIssueTriggers.map((t) => t.hosts).flat();
+    const hostsWithDownIssues = downIssueTriggers.map((t) => t.hosts).flat();
 
     const listNamaHost =
-      hostsWithSnmpIssues.map((host) => host.host).join(", ") ||
+      hostsWithDownIssues.map((host) => host.host).join(", ") ||
       "Tidak ada host";
 
-    return `Jumlah host yang tidak aktif ada: ${hostsWithSnmpIssues.length}\nDaftar host yang tidak aktif: ${listNamaHost}`;
+    return `Jumlah host yang tidak aktif ada: ${hostsWithDownIssues.length}\nDaftar host yang tidak aktif: ${listNamaHost}`;
   } catch (error) {
     console.error("Error ambil host SNMP issue:", error.message);
     return `Error message: ${error.message}`;
