@@ -3,34 +3,6 @@ import axios from "axios";
 
 dotenv.config();
 
-async function claimZabbixToken() {
-  try {
-    const response = await axios.post(
-      process.env.ZABBIX_BASE_URL,
-      {
-        jsonrpc: "2.0",
-        method: "user.login",
-        params: {
-          username: process.env.ZABBIX_USERNAME,
-          password: process.env.ZABBIX_PASSWORD,
-        },
-        id: 1,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const token = response.data.result;
-    return `Token kamu: ${token}`;
-  } catch (error) {
-    console.error("Error login ke Zabbix:", error.message);
-    return `Gagal login ke Zabbix: ${error.message}`;
-  }
-}
-
 async function getHostZabbix() {
   try {
     const response = await axios.post(
@@ -379,7 +351,6 @@ async function getItemHistoryRaw(itemid, timeFrom, valueType = 3) {
 }
 
 export default {
-  claimZabbixToken,
   getHostZabbix,
   getTimeoutHosts,
   getTrafficRouters,

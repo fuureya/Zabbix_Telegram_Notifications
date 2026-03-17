@@ -20,7 +20,6 @@ Anda dapat berinteraksi dengan bot menggunakan perintah-perintah berikut:
 - `/getlinkdown` - Menampilkan detail link atau interface yang sedang down.
 - `/gettraffic` - Menampilkan daftar host untuk melihat rata-rata trafik hari ini (00:00 - sekarang).
 - `/gettemp` - Menampilkan daftar host yang memiliki sensor suhu untuk melihat temperatur saat ini.
-- `/gettoken` - Mengambil token autentikasi Zabbix.
 - `/stop` - Menghentikan bot.
 
 ## ⚙️ Persyaratan (Prerequisites)

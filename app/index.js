@@ -4,7 +4,6 @@ import telegramController from "./src/telegramController.js";
 const {
   sendTriggerEveryHour,
   getHosts,
-  getTokenZabbix,
   getHostsInactive,
   getLinkDown,
   getTrafficSelection,
@@ -24,8 +23,7 @@ bot.start((ctx) => {
     Lihat Data Host Yang Tidak Aktif : /gethostinactive \n
     Lihat Link Yang Tidak Aktif : /getlinkdown \n
     Lihat Rata-rata Trafik Hari Ini : /gettraffic \n
-    Lihat Temperatur Perangkat : /gettemp \n
-    Ambil Token Zabbix : /gettoken \n`
+    Lihat Temperatur Perangkat : /gettemp \n`
   );
   sendTriggerEveryHour(ctx);
 });
@@ -40,9 +38,9 @@ bot.command("gethostinactive", (ctx) => {
   getHostsInactive(ctx);
 });
 
-bot.command("gettoken", (ctx) => {
-  ctx.reply("Mengambil token Dari Zabbix...");
-  getTokenZabbix(ctx);
+bot.command("gethostinactive", (ctx) => {
+  ctx.reply("Mengambil Informasi Jumlah Host Dari Zabbix...");
+  getHostsInactive(ctx);
 });
 
 bot.command("getlinkdown", (ctx) => {

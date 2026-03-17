@@ -54,16 +54,6 @@ const getHostsInactive = async (ctx) => {
   }
 };
 
-const getTokenZabbix = async (ctx) => {
-  try {
-    const message = await claimZabbixToken();
-    await ctx.reply(message);
-  } catch (err) {
-    console.error("Error saat kirim pesan:", err);
-    await ctx.reply("Terjadi kesalahan saat mengambil data.");
-  }
-};
-
 const getTrafficSelection = async (ctx) => {
   try {
     const hosts = await getHostsRaw();
@@ -215,7 +205,6 @@ const handleCallback = async (ctx) => {
 export default {
   sendTriggerEveryHour,
   getHosts,
-  getTokenZabbix,
   getHostsInactive,
   getLinkDown,
   getTrafficSelection,
